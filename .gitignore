@@ -1,0 +1,6 @@
+# Arquivos de config
+*.vscode
+
+# Arquivos gerados pelo programa ou compilação
+image.ppm
+*.exe
