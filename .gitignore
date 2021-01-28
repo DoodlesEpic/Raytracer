@@ -1,6 +1,11 @@
 # Arquivos de config
 *.vscode
+*.idea
+
+# Arquivos CMake
+cmake-build-debug
 
 # Arquivos gerados pelo programa ou compilação
+build
 image.ppm
 *.exe
