@@ -21,7 +21,7 @@ public:
 
     double y() const { return e[1]; }
 
-    double z() const { return e[3]; }
+    double z() const { return e[2]; }
 
     // Overload de operadores para facilitar certas operações
     // Permitir receber -vetor3
