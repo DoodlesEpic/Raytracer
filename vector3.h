@@ -26,7 +26,7 @@ public:
     // Overload de operadores para facilitar certas operações
     // Permitir receber -vetor3
     vector3 operator-() const {
-        return vector3(-e[0], -e[1], -e[2]);
+        return {-e[0], -e[1], -e[2]};
     }
 
     // Permitir acessar manualmente cada um dos valores do vetor
@@ -61,12 +61,12 @@ public:
     }
 
     // Retorna o comprimento total do vetor (soma de cada um de seus valores)
-    const double comprimento() {
+    double comprimento() {
         return e[0] + e[1] + e[2];
     }
 
     // Retorna o quadrado do comprimento total do vetor
-    const double quadradoComprimento() {
+    double quadradoComprimento() {
         return e[0] * e[0] + e[1] * e[1] + e[2] * e[2];
     }
 };
@@ -83,19 +83,19 @@ inline std::ostream& operator<<(std::ostream &out, const vector3 &v) {
 }
 
 inline vector3 operator+(const vector3 &u, const vector3 &v) {
-    return vector3(u.e[0] + v.e[0], u.e[1] + v.e[1], u.e[2] + v.e[2]);
+    return {u.e[0] + v.e[0], u.e[1] + v.e[1], u.e[2] + v.e[2]};
 }
 
 inline vector3 operator-(const vector3 &u, const vector3 &v) {
-    return vector3(u.e[0] - v.e[0], u.e[1] - v.e[1], u.e[2] - v.e[2]);
+    return {u.e[0] - v.e[0], u.e[1] - v.e[1], u.e[2] - v.e[2]};
 }
 
 inline vector3 operator*(const vector3 &u, const vector3 &v) {
-    return vector3(u.e[0] * v.e[0], u.e[1] * v.e[1], u.e[2] * v.e[2]);
+    return {u.e[0] * v.e[0], u.e[1] * v.e[1], u.e[2] * v.e[2]};
 }
 
 inline vector3 operator*(double t, const vector3 &v) {
-    return vector3(t*v.e[0], t*v.e[1], t*v.e[2]);
+    return {t*v.e[0], t*v.e[1], t*v.e[2]};
 }
 
 inline vector3 operator*(const vector3 &v, double t) {
@@ -113,9 +113,9 @@ inline double dot(const vector3 &u, const vector3 &v) {
 }
 
 inline vector3 cross(const vector3 &u, const vector3 &v) {
-    return vector3(u.e[1] * v.e[2] - u.e[2] * v.e[1],
+    return {u.e[1] * v.e[2] - u.e[2] * v.e[1],
                 u.e[2] * v.e[0] - u.e[0] * v.e[2],
-                u.e[0] * v.e[1] - u.e[1] * v.e[0]);
+                u.e[0] * v.e[1] - u.e[1] * v.e[0]};
 }
 
 inline vector3 unit_vector(vector3 v) {
