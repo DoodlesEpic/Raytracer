@@ -21,7 +21,7 @@ public:
 
     // Retorna a posição no raio de acordo com o offset
     ponto3 em(double offset) {
-        return orig + offset * dir
+        return origem + offset * direcao;
     }
 
 private:
