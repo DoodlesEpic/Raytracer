@@ -62,7 +62,7 @@ public:
 
     // Retorna o comprimento total do vetor (soma de cada um de seus valores)
     double comprimento() {
-        return e[0] + e[1] + e[2];
+        return sqrt(quadradoComprimento());
     }
 
     // Retorna o quadrado do comprimento total do vetor
