@@ -118,7 +118,7 @@ inline vector3 cross(const vector3 &u, const vector3 &v) {
                 u.e[0] * v.e[1] - u.e[1] * v.e[0]};
 }
 
-inline vector3 unit_vector(vector3 v) {
+inline vector3 vetorUnitario(vector3 v) {
     return v / v.comprimento();
 }
 
