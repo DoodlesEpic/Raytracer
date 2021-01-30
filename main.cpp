@@ -20,9 +20,14 @@ bool acertouEsfera(const ponto3 &centro, double raioEsfera, const raio &raio) {
 }
 
 cor corRaio(const raio &raio) {
-    // Caso o raio acertar a esfera no ponto z = -1, com raio 0.7, colorir o pixel de vermelho
-    if (acertouEsfera(ponto3(0, 0, -1), 0.7, raio)) {
+    // Caso o raio acertar a esfera no ponto z = -1, com raio 0.3, colorir o pixel de vermelho
+    if (acertouEsfera(ponto3(0, 0, -1), 0.3, raio)) {
         return cor(0.7, 0.2, 0);
+    }
+
+    // Caso o raio acertar a esfera no ponto x =2 e z = -3, com raio 0.7, colorir o pixel de azul
+    if (acertouEsfera(ponto3(2, 0, -3), 0.7, raio)) {
+        return cor(0, 0.2, 0.8);
     }
 
     vector3 direcaoUnitaria = vetorUnitario(raio.getDirecao());
