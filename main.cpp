@@ -4,6 +4,32 @@
 
 #include <iostream>
 
+bool acertouEsfera(const ponto3 &centro, double raioEsfera, const raio &raio) {
+    vector3 posicao = raio.getOrigem() - centro;
+
+    // Baskhara
+    double a = dot(raio.getDirecao(), raio.getDirecao());
+    double b = 2.0 * dot(posicao, raio.getDirecao());
+    double c = dot(posicao, posicao) - raioEsfera * raioEsfera;
+
+    // Delta de Baskhara, para descobrir se acertamos a esfera ou não
+    double delta = b * b - 4 * a * c;
+
+    // Se delta for maior que 0, há pelo menos uma intersecção com a esfera
+    return (delta > 0);
+}
+
+cor corRaio(const raio &raio) {
+    // Caso o raio acertar a esfera no ponto z = -1, com raio 0.7, colorir o pixel de vermelho
+    if (acertouEsfera(ponto3(0, 0, -1), 0.7, raio)) {
+        return cor(0.7, 0.2, 0);
+    }
+
+    vector3 direcaoUnitaria = vetorUnitario(raio.getDirecao());
+    auto t = 0.5 * (direcaoUnitaria.y() + 1.0);
+    return (1.0 - t) * cor(1.0, 1.0, 1.0) + t * cor(0.5, 0.7, 1.0);
+}
+
 int main(int, char **) {
     // Configuração da tela da imagem
     // Utilizar uma proporção de tela padrão, e inferir a altura a partir da largura
