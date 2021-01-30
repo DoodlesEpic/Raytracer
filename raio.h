@@ -20,7 +20,7 @@ public:
     }
 
     // Retorna a posição no raio de acordo com o offset
-    ponto3 em(double offset) {
+    ponto3 em(double offset) const {
         return origem + offset * direcao;
     }
 

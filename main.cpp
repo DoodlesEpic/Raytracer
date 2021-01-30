@@ -4,7 +4,7 @@
 
 #include <iostream>
 
-bool acertouEsfera(const ponto3 &centro, double raioEsfera, const raio &raio) {
+double acertouEsfera(const ponto3 &centro, double raioEsfera, const raio &raio) {
     vector3 posicao = raio.getOrigem() - centro;
 
     // Baskhara
@@ -16,23 +16,25 @@ bool acertouEsfera(const ponto3 &centro, double raioEsfera, const raio &raio) {
     double delta = b * b - 4 * a * c;
 
     // Se delta for maior que 0, há pelo menos uma intersecção com a esfera
-    return (delta > 0);
+    if (delta < 0) {
+        return -1.0;
+    } else {
+        return (-b - sqrt(delta)) / 2.0 * a;
+    }
 }
 
 cor corRaio(const raio &raio) {
-    // Caso o raio acertar a esfera no ponto z = -1, com raio 0.3, colorir o pixel de vermelho
-    if (acertouEsfera(ponto3(0, 0, -1), 0.3, raio)) {
-        return cor(0.7, 0.2, 0);
+    // Caso haja um ponto o raio acerta a esfera, renderizar com cores a partir do normal
+    double ponto = acertouEsfera(ponto3(0, 0, -1), 0.7, raio);
+    if (ponto > 0.0) {
+        vector3 normal = vetorUnitario(raio.em(ponto) - vector3(0, 0, -1));
+        return 0.5 * cor(normal.x() + 1, normal.y() + 1, normal.y() + 1);
     }
 
-    // Caso o raio acertar a esfera no ponto x =2 e z = -3, com raio 0.7, colorir o pixel de azul
-    if (acertouEsfera(ponto3(2, 0, -3), 0.7, raio)) {
-        return cor(0, 0.2, 0.8);
-    }
-
+    // Renderizar backdrop caso não tenho acertado esfera
     vector3 direcaoUnitaria = vetorUnitario(raio.getDirecao());
-    auto t = 0.5 * (direcaoUnitaria.y() + 1.0);
-    return (1.0 - t) * cor(1.0, 1.0, 1.0) + t * cor(0.5, 0.7, 1.0);
+    ponto = 0.5 * (direcaoUnitaria.y() + 1.0);
+    return (1.0 - ponto) * cor(1.0, 1.0, 1.0) + ponto * cor(0.5, 0.7, 1.0);
 }
 
 int main(int, char **) {
