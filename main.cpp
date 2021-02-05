@@ -8,18 +8,18 @@ double acertouEsfera(const ponto3 &centro, double raioEsfera, const raio &raio) 
     vector3 posicao = raio.getOrigem() - centro;
 
     // Baskhara
-    double a = dot(raio.getDirecao(), raio.getDirecao());
-    double b = 2.0 * dot(posicao, raio.getDirecao());
-    double c = dot(posicao, posicao) - raioEsfera * raioEsfera;
+    double a = raio.getDirecao().quadradoComprimento();
+    double metadeDeB = dot(posicao, raio.getDirecao());
+    double c = posicao.quadradoComprimento() - raioEsfera * raioEsfera;
 
     // Delta de Baskhara, para descobrir se acertamos a esfera ou não
-    double delta = b * b - 4 * a * c;
+    double delta = metadeDeB * metadeDeB - a * c;
 
     // Se delta for maior que 0, há pelo menos uma intersecção com a esfera
     if (delta < 0) {
         return -1.0;
     } else {
-        return (-b - sqrt(delta)) / (2.0 * a);
+        return (-metadeDeB - sqrt(delta)) / a;
     }
 }
 
