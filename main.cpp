@@ -19,7 +19,7 @@ double acertouEsfera(const ponto3 &centro, double raioEsfera, const raio &raio) 
     if (delta < 0) {
         return -1.0;
     } else {
-        return (-b - sqrt(delta)) / 2.0 * a;
+        return (-b - sqrt(delta)) / (2.0 * a);
     }
 }
 
@@ -28,7 +28,7 @@ cor corRaio(const raio &raio) {
     double ponto = acertouEsfera(ponto3(0, 0, -1), 0.7, raio);
     if (ponto > 0.0) {
         vector3 normal = vetorUnitario(raio.em(ponto) - vector3(0, 0, -1));
-        return 0.5 * cor(normal.x() + 1, normal.y() + 1, normal.y() + 1);
+        return 0.5 * cor(normal.x() + 1, normal.y() + 1, normal.z() + 1);
     }
 
     // Renderizar backdrop caso não tenho acertado esfera
