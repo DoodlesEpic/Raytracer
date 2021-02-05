@@ -48,7 +48,8 @@ bool esfera::acerto(const raio &raio, double tMin, double tMax, struct acerto &a
     // (Talvez mudar isso pelo amor)
     acerto.t = raiz;
     acerto.ponto = raiz.em(acerto.t);
-    acerto.normal = (acerto.ponto - centro) / raio;
+    vector3 normalParaFora = (acerto.ponto - centro) / raio;
+    acerto.definirNormalDaFace(raio, normalParaFora);
 
     return true;
 }

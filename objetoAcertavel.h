@@ -7,6 +7,12 @@ struct acerto {
     ponto3 ponto;
     vector3 normal;
     double t;
+    bool faceFrontal;
+
+    inline void definirNormalDaFace(const raio &raio, const vector3 &normalParaFora) {
+        faceFrontal = dot(raio.getDirecao(), normalParaFora) < 0;
+        normal = faceFrontal ? normalParaFora : -normalParaFora;
+    }
 };
 
 class objetoAcertavel {
