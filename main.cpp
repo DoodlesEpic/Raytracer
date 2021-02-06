@@ -1,6 +1,9 @@
 #include "cor.h"
 #include "raio.h"
 #include "vector3.h"
+#include "util.h"
+#include "objetosAcertaveis.h"
+#include "esfera.h"
 
 #include <iostream>
 
@@ -23,17 +26,15 @@ double acertouEsfera(const ponto3 &centro, double raioEsfera, const raio &raio) 
     }
 }
 
-cor corRaio(const raio &raio) {
-    // Caso haja um ponto o raio acerta a esfera, renderizar com cores a partir do normal
-    double ponto = acertouEsfera(ponto3(0, 0, -1), 0.7, raio);
-    if (ponto > 0.0) {
-        vector3 normal = vetorUnitario(raio.em(ponto) - vector3(0, 0, -1));
-        return 0.5 * cor(normal.x() + 1, normal.y() + 1, normal.z() + 1);
+cor corRaio(const raio &raio, const objetoAcertavel &mundo) {
+    acerto acerto;
+    if (mundo.acerto(raio, 0, infinito, acerto)) {
+        return 0.5 * (acerto.normal + cor(1, 1, 1));
     }
 
     // Renderizar backdrop caso não tenho acertado esfera
     vector3 direcaoUnitaria = vetorUnitario(raio.getDirecao());
-    ponto = 0.5 * (direcaoUnitaria.y() + 1.0);
+    double ponto = 0.5 * (direcaoUnitaria.y() + 1.0);
     return (1.0 - ponto) * cor(1.0, 1.0, 1.0) + ponto * cor(0.5, 0.7, 1.0);
 }
 
@@ -49,6 +50,12 @@ int main(int, char **) {
     double alturaJanela = 2.0;
     double larguraJanela = proporcaoTela * alturaJanela;
     double distanciaFocal = 1.0;
+
+    // Configuração do mapa
+    objetosAcertaveis mundo;
+    mundo.adicionar(std::make_shared<esfera>(ponto3(0, 0, -1), 0.5));
+    mundo.adicionar(std::make_shared<esfera>(ponto3(4, 4, -9), 1));
+    mundo.adicionar(std::make_shared<esfera>(ponto3(0, -100.5, 1), 100));
 
     // Ponto 0, onde estará localizada a câmera
     ponto3 origem = ponto3(0, 0, 0);
@@ -76,7 +83,7 @@ int main(int, char **) {
 
             // Construir um raio e utilizá-lo para calcular a cor do pixel
             raio raio(origem, cantoInferiorEsquerdo + u * horizontal + v * vertical - origem);
-            cor corPixel = corRaio(raio);
+            cor corPixel = corRaio(raio, mundo);
 
             // Printar resultado do pixel
             escreverCor(std::cout, corPixel);
