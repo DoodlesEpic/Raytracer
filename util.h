@@ -23,4 +23,11 @@ inline double doubleAleatorio(double min, double max) {
     return min + (max - min) * doubleAleatorio();
 }
 
+// Garante que o valor recebido x estará entre min e max
+inline double clamp(double x, double min, double max) {
+    if (x < min) return min;
+    if (x > max) return max;
+    return x;
+}
+
 #endif //RAYTRACER_UTIL_H
