@@ -27,7 +27,7 @@ public:
 
     // Altera acerto para ser o objeto acertado mais próximo
     // Retorna se acertou um objeto ou não
-    bool acerto(const raio &raio, double tMin, double tMax, acerto &acerto) const override;
+    bool acerto(const raio &raio, double tMin, double tMax, struct acerto &acerto) const override;
 
 public:
     std::vector<std::shared_ptr<objetoAcertavel>> objetos;
@@ -35,8 +35,8 @@ public:
 
 // Altera acerto para ser o objeto acertado mais próximo
 // Retorna se acertou um objeto ou não
-bool objetosAcertaveis::acerto(const raio &raio, double tMin, double tMax, acerto &acerto) const {
-    acerto acertoTemporario;
+bool objetosAcertaveis::acerto(const raio &raio, double tMin, double tMax, struct acerto &acerto) const {
+    struct acerto acertoTemporario;
     bool acertouAlgo = false;
     double acertoMaisProximo = tMax;
 

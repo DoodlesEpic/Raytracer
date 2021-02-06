@@ -8,17 +8,17 @@ class esfera : public objetoAcertavel {
 public:
     esfera() {}
 
-    esfera(ponto3 centro, double raio) : centro(centro), raio(raio) {};
+    esfera(ponto3 centro, double raioEsfera) : centro(centro), raioEsfera(raioEsfera) {};
 
-    virtual bool acerto(const raio &raio, double tMin, double tMax, acerto &acerto) const override;
+    virtual bool acerto(const raio &raio, double tMin, double tMax, struct acerto &acerto) const override;
 
 public:
     ponto3 centro;
-    double raio;
+    double raioEsfera;
 };
 
-bool esfera::acerto(const raio &raio, double tMin, double tMax, struct acerto &acerto) const {
-    vetor3 posicao = raio.getOrigem() - centro;
+bool esfera::acerto(const class raio &raio, double tMin, double tMax, struct acerto &acerto) const {
+    vector3 posicao = raio.getOrigem() - centro;
 
     // Baskhara
     double a = raio.getDirecao().quadradoComprimento();
@@ -35,7 +35,7 @@ bool esfera::acerto(const raio &raio, double tMin, double tMax, struct acerto &a
 
     // Encontrar o ponto mais próximo
     // Garantir que esteja entre tMin e tMax
-    double raizQuadradaDelta = sqrt(delta)
+    double raizQuadradaDelta = sqrt(delta);
     double raiz = (-metadeDeB - raizQuadradaDelta) / a;
     if (raiz < tMin || tMax < raiz) {
         raiz = (-metadeDeB + raizQuadradaDelta) / a;
@@ -47,8 +47,8 @@ bool esfera::acerto(const raio &raio, double tMin, double tMax, struct acerto &a
     // Atualizar a estrutura de acerto
     // (Talvez mudar isso pelo amor)
     acerto.t = raiz;
-    acerto.ponto = raiz.em(acerto.t);
-    vector3 normalParaFora = (acerto.ponto - centro) / raio;
+    acerto.ponto = raio.em(acerto.t);
+    vector3 normalParaFora = (acerto.ponto - centro) / raioEsfera;
     acerto.definirNormalDaFace(raio, normalParaFora);
 
     return true;
