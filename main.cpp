@@ -4,6 +4,7 @@
 #include "util.h"
 #include "objetosAcertaveis.h"
 #include "esfera.h"
+#include "camera.h"
 
 #include <iostream>
 
@@ -45,25 +46,18 @@ int main(int, char **) {
     const int larguraImagem = 1280;
     const int alturaImagem = static_cast<int>(larguraImagem / proporcaoTela);
 
-    // Configuração da câmera
-    // Inferir largura da janela a partir da proporção e altura
-    double alturaJanela = 2.0;
-    double larguraJanela = proporcaoTela * alturaJanela;
-    double distanciaFocal = 1.0;
+    // Configurar a câmera
+    const camera camera;
+
+    // Utilizado para o anti-aliasing
+    // Quanto maior, mais lento, mas menos serrilhado
+    const int samplesPorPixel = 100;
 
     // Configuração do mapa
     objetosAcertaveis mundo;
     mundo.adicionar(std::make_shared<esfera>(ponto3(0, 0, -1), 0.5));
     mundo.adicionar(std::make_shared<esfera>(ponto3(4, 4, -9), 1));
     mundo.adicionar(std::make_shared<esfera>(ponto3(0, -100.5, 1), 100));
-
-    // Ponto 0, onde estará localizada a câmera
-    ponto3 origem = ponto3(0, 0, 0);
-
-    // Vetores representando os eixo da tela, e o canto inferior esquerdo
-    vector3 horizontal = vector3(larguraJanela, 0, 0);
-    vector3 vertical = vector3(0, alturaJanela, 0);
-    vector3 cantoInferiorEsquerdo = origem - horizontal / 2 - vertical / 2 - vector3(0, 0, distanciaFocal);
 
     // Header da image PPM
     std::cout << "P3" << std::endl
@@ -77,16 +71,25 @@ int main(int, char **) {
 
         // Para cada pixel na scanline
         for (int i = 0; i < larguraImagem; ++i) {
-            // Offsets em espaço UV para posicionar o raio
-            double u = double(i) / (larguraImagem - 1);
-            double v = double(j) / (alturaImagem - 1);
+            cor corPixel(0, 0, 0);
 
-            // Construir um raio e utilizá-lo para calcular a cor do pixel
-            raio raio(origem, cantoInferiorEsquerdo + u * horizontal + v * vertical - origem);
-            cor corPixel = corRaio(raio, mundo);
+            for (int samples = 0; samples < samplesPorPixel; ++samples) {
+                // Offsets em espaço UV para posicionar o raio
+                // Adicionamos double aleatório para garantir samples diferentes
+                // Dessa forma o resultado final não tem "escadinhas"
+                // FIXME: Não aleatorizar com apenas 1 sample
+                double u = double(i + doubleAleatorio()) / (larguraImagem - 1);
+                double v = double(j + doubleAleatorio()) / (alturaImagem - 1);
 
-            // Printar resultado do pixel
-            escreverCor(std::cout, corPixel);
+                // Construir um raio e utilizá-lo para calcular a cor do pixel
+                raio raio = camera.getRaio(u, v);
+
+                // Somar a cor do pixel a cor que o raio pegou toda sample
+                corPixel += corRaio(raio, mundo);
+            }
+
+            // Printar resultado do pixel, garantindo que as cores estão entre 0 e 255
+            escreverCor(std::cout, corPixel, samplesPorPixel);
         }
     }
 
