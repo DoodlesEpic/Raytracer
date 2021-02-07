@@ -4,6 +4,7 @@
 
 # Arquivos CMake
 cmake-build-debug
+cmake-build-release
 
 # Arquivos gerados pelo programa ou compilação
 build
