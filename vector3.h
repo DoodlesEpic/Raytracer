@@ -61,7 +61,8 @@ public:
         return *this *= 1 / divisor;
     }
 
-    // Retorna o comprimento total do vetor (soma de cada um de seus valores)
+    // Retorna o comprimento total do vetor
+    // (Teorema de pitágoras em três dimensões)
     double comprimento() const {
         return sqrt(quadradoComprimento());
     }

@@ -51,7 +51,7 @@ int main(int, char **) {
     // Configuração da tela da imagem
     // Utilizar uma proporção de tela padrão, e inferir a altura a partir da largura
     const double proporcaoTela = 16.0 / 9.0;
-    const int larguraImagem = 400;
+    const int larguraImagem = 1280;
     const int alturaImagem = static_cast<int>(larguraImagem / proporcaoTela);
 
     // Configurar a câmera
@@ -59,7 +59,7 @@ int main(int, char **) {
 
     // Utilizado para o anti-aliasing
     // Quanto maior, mais lento, mas menos serrilhado
-    const int samplesPorPixel = 100;
+    const int samplesPorPixel = 200;
 
     // Profundidade máxima de recursão para corRaio
     // Aumentar deveria dar resultados melhores, mas será mais lento
@@ -69,6 +69,7 @@ int main(int, char **) {
     objetosAcertaveis mundo;
     mundo.adicionar(std::make_shared<esfera>(ponto3(0, 0, -1), 0.5));
     mundo.adicionar(std::make_shared<esfera>(ponto3(4, 4, -9), 1));
+    mundo.adicionar(std::make_shared<esfera>(ponto3(6, 6, -10), 2));
     mundo.adicionar(std::make_shared<esfera>(ponto3(0, -100.5, 1), 100));
 
     // Header da image PPM
