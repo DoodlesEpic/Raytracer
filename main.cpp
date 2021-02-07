@@ -27,14 +27,22 @@ double acertouEsfera(const ponto3 &centro, double raioEsfera, const raio &raio) 
     }
 }
 
-cor corRaio(const raio &raio, const objetoAcertavel &mundo) {
+cor corRaio(const raio &raioAtual, const objetoAcertavel &mundo, const int profundidadeMaxima) {
     acerto acerto;
-    if (mundo.acerto(raio, 0, infinito, acerto)) {
-        return 0.5 * (acerto.normal + cor(1, 1, 1));
+
+    // Garantir que não há um stack overflow caso passemos da profundida máxima
+    if (profundidadeMaxima <= 0) {
+        return cor(0, 0, 0);
+    }
+
+    // Checar recursivamente se acertamos um objeto no mundo
+    if (mundo.acerto(raioAtual, 0, infinito, acerto)) {
+        ponto3 meta = acerto.ponto + acerto.normal + vector3::aleatorioEmEsferaUnitaria();
+        return 0.5 * corRaio(raio(acerto.ponto, meta - acerto.ponto), mundo, profundidadeMaxima - 1);
     }
 
     // Renderizar backdrop caso não tenho acertado esfera
-    vector3 direcaoUnitaria = vetorUnitario(raio.getDirecao());
+    vector3 direcaoUnitaria = vetorUnitario(raioAtual.getDirecao());
     double ponto = 0.5 * (direcaoUnitaria.y() + 1.0);
     return (1.0 - ponto) * cor(1.0, 1.0, 1.0) + ponto * cor(0.5, 0.7, 1.0);
 }
@@ -43,7 +51,7 @@ int main(int, char **) {
     // Configuração da tela da imagem
     // Utilizar uma proporção de tela padrão, e inferir a altura a partir da largura
     const double proporcaoTela = 16.0 / 9.0;
-    const int larguraImagem = 1280;
+    const int larguraImagem = 400;
     const int alturaImagem = static_cast<int>(larguraImagem / proporcaoTela);
 
     // Configurar a câmera
@@ -52,6 +60,10 @@ int main(int, char **) {
     // Utilizado para o anti-aliasing
     // Quanto maior, mais lento, mas menos serrilhado
     const int samplesPorPixel = 100;
+
+    // Profundidade máxima de recursão para corRaio
+    // Aumentar deveria dar resultados melhores, mas será mais lento
+    const int profundidadeMaxima = 50;
 
     // Configuração do mapa
     objetosAcertaveis mundo;
@@ -85,7 +97,7 @@ int main(int, char **) {
                 raio raio = camera.getRaio(u, v);
 
                 // Somar a cor do pixel a cor que o raio pegou toda sample
-                corPixel += corRaio(raio, mundo);
+                corPixel += corRaio(raio, mundo, profundidadeMaxima);
             }
 
             // Printar resultado do pixel, garantindo que as cores estão entre 0 e 255

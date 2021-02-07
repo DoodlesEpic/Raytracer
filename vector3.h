@@ -3,6 +3,7 @@
 
 #include <cmath>
 #include <iostream>
+#include "util.h"
 
 // Implementa um vetor base para ser utilizado para posições, cores, entre outros
 class vector3 {
@@ -69,6 +70,26 @@ public:
     double quadradoComprimento() const {
         return e[0] * e[0] + e[1] * e[1] + e[2] * e[2];
     }
+
+    // Retorna um vector com coordenadas aleatórias (entre 0 e 1)
+    inline static const vector3 aleatorio() {
+        return vector3(doubleAleatorio(), doubleAleatorio(), doubleAleatorio());
+    }
+
+    // Retorna um vector com coordenadas aleatórias (entre min e max)
+    inline static const vector3 aleatorio(double min, double max) {
+        return vector3(doubleAleatorio(min, max), doubleAleatorio(min, max), doubleAleatorio(min, max));
+    }
+
+    // Adquire um vetor aleatório dentro de uma esfera (-1 até 1)
+    // Utiliza um método de rejeição para tal
+    static const vector3 aleatorioEmEsferaUnitaria() {
+        while(true) {
+            vector3 ponto = vector3::aleatorio(-1, 1);
+            if (ponto.quadradoComprimento() >= 1) continue;
+            return ponto;
+        }
+    }
 };
 
 // Usar aliases para instanciar vector3
@@ -78,7 +99,7 @@ using ponto3 = vector3;
 using cor = vector3;
 
 // Funções de utilidade para classe vector3
-inline std::ostream& operator<<(std::ostream &out, const vector3 &v) {
+inline std::ostream &operator<<(std::ostream &out, const vector3 &v) {
     return out << v.e[0] << ' ' << v.e[1] << ' ' << v.e[2];
 }
 
@@ -95,7 +116,7 @@ inline vector3 operator*(const vector3 &u, const vector3 &v) {
 }
 
 inline vector3 operator*(double t, const vector3 &v) {
-    return {t*v.e[0], t*v.e[1], t*v.e[2]};
+    return {t * v.e[0], t * v.e[1], t * v.e[2]};
 }
 
 inline vector3 operator*(const vector3 &v, double t) {
@@ -103,7 +124,7 @@ inline vector3 operator*(const vector3 &v, double t) {
 }
 
 inline vector3 operator/(vector3 v, double t) {
-    return (1/t) * v;
+    return (1 / t) * v;
 }
 
 inline double dot(const vector3 &u, const vector3 &v) {
@@ -114,8 +135,8 @@ inline double dot(const vector3 &u, const vector3 &v) {
 
 inline vector3 cross(const vector3 &u, const vector3 &v) {
     return {u.e[1] * v.e[2] - u.e[2] * v.e[1],
-                u.e[2] * v.e[0] - u.e[0] * v.e[2],
-                u.e[0] * v.e[1] - u.e[1] * v.e[0]};
+            u.e[2] * v.e[0] - u.e[0] * v.e[2],
+            u.e[0] * v.e[1] - u.e[1] * v.e[0]};
 }
 
 inline vector3 vetorUnitario(vector3 v) {
