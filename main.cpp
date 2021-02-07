@@ -36,7 +36,7 @@ cor corRaio(const raio &raioAtual, const objetoAcertavel &mundo, const int profu
     }
 
     // Checar recursivamente se acertamos um objeto no mundo
-    if (mundo.acerto(raioAtual, 0, infinito, acerto)) {
+    if (mundo.acerto(raioAtual, 0.001, infinito, acerto)) {
         ponto3 meta = acerto.ponto + acerto.normal + vector3::aleatorioEmEsferaUnitaria();
         return 0.5 * corRaio(raio(acerto.ponto, meta - acerto.ponto), mundo, profundidadeMaxima - 1);
     }
