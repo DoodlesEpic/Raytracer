@@ -22,7 +22,7 @@ bool esfera::acerto(const class raio &raio, double tMin, double tMax, struct ace
 
     // Baskhara
     double a = raio.getDirecao().quadradoComprimento();
-    double metadeDeB = dot(posicao, raio.getDirecao());
+    double metadeDeB = produtoEscalar(posicao, raio.getDirecao());
     double c = posicao.quadradoComprimento() - raioEsfera * raioEsfera;
 
     // Delta de Baskhara, para descobrir se acertamos a esfera ou não

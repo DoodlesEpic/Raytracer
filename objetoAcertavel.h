@@ -10,7 +10,7 @@ struct acerto {
     bool faceFrontal;
 
     inline void definirNormalDaFace(const raio &raio, const vector3 &normalParaFora) {
-        faceFrontal = dot(raio.getDirecao(), normalParaFora) < 0;
+        faceFrontal = produtoEscalar(raio.getDirecao(), normalParaFora) < 0;
         normal = faceFrontal ? normalParaFora : -normalParaFora;
     }
 };

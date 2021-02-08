@@ -128,7 +128,7 @@ inline vector3 operator/(vector3 v, double t) {
     return (1 / t) * v;
 }
 
-inline double dot(const vector3 &u, const vector3 &v) {
+inline double produtoEscalar(const vector3 &u, const vector3 &v) {
     return u.e[0] * v.e[0]
            + u.e[1] * v.e[1]
            + u.e[2] * v.e[2];
